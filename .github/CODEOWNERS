@@ -1,15 +1,15 @@
 # Code owners for automatic review requests
 
 # Default owners for everything
-* @YOUR_GITHUB_USERNAME
+* @Ongza-Dev
 
 # Infrastructure code
-/terraform/ @YOUR_GITHUB_USERNAME
-/lambda/ @YOUR_GITHUB_USERNAME
+/terraform/ @Ongza-Dev
+/lambda/ @Ongza-Dev
 
 # Python application
-/src/ @YOUR_GITHUB_USERNAME
-/tests/ @YOUR_GITHUB_USERNAME
+/src/ @Ongza-Dev
+/tests/ @Ongza-Dev
 
 # CI/CD
-/.github/ @YOUR_GITHUB_USERNAME
+/.github/ @Ongza-Dev
