@@ -1,0 +1,15 @@
+# Code owners for automatic review requests
+
+# Default owners for everything
+* @YOUR_GITHUB_USERNAME
+
+# Infrastructure code
+/terraform/ @YOUR_GITHUB_USERNAME
+/lambda/ @YOUR_GITHUB_USERNAME
+
+# Python application
+/src/ @YOUR_GITHUB_USERNAME
+/tests/ @YOUR_GITHUB_USERNAME
+
+# CI/CD
+/.github/ @YOUR_GITHUB_USERNAME

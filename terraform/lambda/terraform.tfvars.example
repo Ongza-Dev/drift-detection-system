@@ -1,0 +1,4 @@
+aws_region     = "us-east-1"
+drift_bucket   = "drift-detection-drift-detection-dev-026bfe5b"
+sns_topic_arn  = "arn:aws:sns:us-east-1:900317037265:vprofile-pipeline-notifications"
+environments   = "dev,staging,prod"
