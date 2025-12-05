@@ -1,6 +1,6 @@
 """Tests for CLI module."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from click.testing import CliRunner
@@ -19,7 +19,9 @@ def mock_components():
     """Mock all components."""
     with patch("drift_detection.cli.AWSScanner") as mock_scanner, patch(
         "drift_detection.cli.S3Storage"
-    ) as mock_storage, patch("drift_detection.cli.DriftComparator") as mock_comparator, patch(
+    ) as mock_storage, patch(
+        "drift_detection.cli.DriftComparator"
+    ) as mock_comparator, patch(
         "drift_detection.cli.DriftReporter"
     ) as mock_reporter, patch(
         "drift_detection.cli.SNSNotifier"
