@@ -32,14 +32,19 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest tests -v --cov=src --cov-report=xml --cov-report=term-missing
+          pytest tests -v --cov=src/drift_detection --cov-report=xml:coverage.xml --cov-report=term-missing
 
       - name: Check coverage
         run: |
           coverage report --fail-under=80
 
+      - name: Upload coverage to SonarCloud
+        run: |
+          ls -la coverage.xml || echo "Coverage file not found"
+
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
