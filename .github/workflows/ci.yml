@@ -43,7 +43,7 @@ jobs:
           ls -la coverage.xml || echo "Coverage file not found"
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@e44258b109568baa0df60ed515909fc6c72cba24
+        uses: SonarSource/sonarcloud-github-action@v2.1.1  # Pinned version
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
