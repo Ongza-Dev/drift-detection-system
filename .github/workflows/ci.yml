@@ -33,6 +33,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           pytest tests -v --cov=src/drift_detection --cov-report=xml:coverage.xml --cov-report=term-missing
+          sed -i 's|<source>.*</source>|<source>.</source>|g' coverage.xml
 
       - name: Check coverage
         run: |
