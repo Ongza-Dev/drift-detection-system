@@ -132,3 +132,5 @@ terraform/.terraform.lock.hcl
 **/.terraform/
 **/.terraform.lock.hcl
 terraform.tfstate*
+terraform.tfvars
+**/terraform.tfvars

@@ -49,12 +49,38 @@ resource "aws_iam_role_policy" "lambda_policy" {
       {
         Effect = "Allow"
         Action = [
-          "ec2:Describe*",
-          "rds:Describe*",
-          "s3:*",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeInstances",
+          "rds:DescribeDBInstances",
+          "rds:ListTagsForResource",
           "lambda:ListFunctions",
           "lambda:ListTags",
-          "ecs:*"
+          "ecs:ListClusters",
+          "ecs:ListServices",
+          "ecs:DescribeServices",
+          "ecs:ListTagsForResource"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = "arn:aws:s3:::${var.drift_bucket}/*"
+      },
+      {
+        Effect = "Allow"
+        Action = ["s3:ListBucket"]
+        Resource = "arn:aws:s3:::${var.drift_bucket}"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListAllMyBuckets",
+          "s3:GetBucketTagging"
         ]
         Resource = "*"
       },
@@ -65,11 +91,26 @@ resource "aws_iam_role_policy" "lambda_policy" {
       },
       {
         Effect   = "Allow"
-        Action   = ["logs:*"]
-        Resource = "arn:aws:logs:*:*:*"
+        Action   = ["sqs:SendMessage"]
+        Resource = aws_sqs_queue.lambda_dlq.arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:${var.aws_region}:*:log-group:/aws/lambda/drift-detection:*"
       }
     ]
   })
+}
+
+# SQS Dead Letter Queue
+resource "aws_sqs_queue" "lambda_dlq" {
+  name                      = "drift-detection-dlq"
+  message_retention_seconds = 1209600  # 14 days
 }
 
 # Lambda Function
@@ -80,6 +121,10 @@ resource "aws_lambda_function" "drift_detection" {
   image_uri     = "${aws_ecr_repository.drift_detection.repository_url}:latest"
   timeout       = 300
   memory_size   = 512
+
+  dead_letter_config {
+    target_arn = aws_sqs_queue.lambda_dlq.arn
+  }
 
   environment {
     variables = {

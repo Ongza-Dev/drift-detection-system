@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 import boto3
+from botocore.config import Config
 from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
@@ -15,12 +16,17 @@ class AWSScanner:
 
     def __init__(self, region: str = "us-east-1"):
         self.region = region
+        config = Config(
+            connect_timeout=5,
+            read_timeout=60,
+            retries={"max_attempts": 3, "mode": "adaptive"},
+        )
         self.session = boto3.Session(region_name=region)
-        self.ec2 = self.session.client("ec2")
-        self.rds = self.session.client("rds")
-        self.s3 = self.session.client("s3")
-        self.lambda_client = self.session.client("lambda")
-        self.ecs = self.session.client("ecs")
+        self.ec2 = self.session.client("ec2", config=config)
+        self.rds = self.session.client("rds", config=config)
+        self.s3 = self.session.client("s3", config=config)
+        self.lambda_client = self.session.client("lambda", config=config)
+        self.ecs = self.session.client("ecs", config=config)
 
     def scan_environment(self, environment: str) -> Dict[str, Any]:
         """Scan all resources for an environment."""

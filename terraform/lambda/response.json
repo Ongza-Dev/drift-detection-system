@@ -1,0 +1,1 @@
+{"statusCode": 200, "body": "{\"results\": [{\"environment\": \"dev\", \"status\": \"drift_detected\", \"risk\": \"high\", \"alert_sent\": true}, {\"environment\": \"staging\", \"status\": \"no_baseline\"}, {\"environment\": \"prod\", \"status\": \"no_baseline\"}]}"}
